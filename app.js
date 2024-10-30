@@ -66,3 +66,37 @@ function validateForm() {
 
   return isValid;
 }
+let dataTasks ;
+if(localStorage.task!=null){
+    dataTasks=JSON.parse(localStorage.task) ;
+}else{
+    dataTasks=[];
+}
+const ajouter = document.getElementById("add");
+ajouter.addEventListener("click", function () {
+  if (!validateForm()) {
+    return; // break
+  }
+ 
+  const title = document.getElementById("task-title").value;
+  const description = document.getElementById("task-description").value;
+  const statut = document.getElementById("task-status").value;
+  const deadline = document.getElementById("task-deadline").value;
+  const priority = document.getElementById("task-priority").value;
+
+  // creation d-objet
+  let newTasks = {
+    Titre: title,
+    Description: description,
+    Statut: statut,
+    Date: deadline,
+    Priorite: priority,
+  };
+
+  // ajouter tache a la liste
+    dataTasks.push(newTasks);
+    localStorage.setItem('task', JSON.stringify(dataTasks))
+    clear();
+    showData();
+    updateStatistics();
+});
