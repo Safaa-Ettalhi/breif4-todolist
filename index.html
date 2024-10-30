@@ -37,7 +37,47 @@
                 </div>
             </div>
         </div>
-
+  <!-- Card Add Modal -->
+<div id="task-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 hidden">
+    <div class="bg-slate-300 rounded-lg  p-6 w-96 max-w-full ">
+      <h2 class="text-xl font-bold text-center text-red-600 ">" Ajouter une Tâche "</h2>
+      <form id="modal-form" class="space-y-4">
+        <div>
+          <label for="task-title" class=" text-sm font-medium text-gray-700 px-2">Titre</label>
+          <input type="text" id="task-title" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required>
+        </div>
+        <div>
+          <label for="task-description" class="block text-sm font-medium text-gray-700 px-2">Description</label>
+          <textarea id="task-description" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required></textarea>
+        </div>
+        <div>
+          <label for="task-status" class="block text-sm font-medium text-gray-700 px-2">Statut</label>
+          <select id="task-status" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required>
+            <option value="to-do">To Do</option>
+            <option value="doing">Doing</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div>
+          <label for="task-deadline" class="block text-sm font-medium text-gray-700 px-2">Date d'échéance</label>
+          <input type="date" id="task-deadline" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required>
+        </div>
+        <div>
+          <label for="task-priority" class="block text-sm font-medium text-gray-700 px-2">Priorité</label>
+          <select id="task-priority" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required>
+            <option value="P1">P1</option>
+            <option value="P2">P2</option>
+            <option value="P3">P3</option>
+          </select>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" class="bg-gray-400 text-gray-800 p-2 rounded-md hover:bg-gray-500 " id="close">Annuler</button>
+          <button type="button" class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600  ml-2" id="add">Ajouter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
 
     <!-- link JS -->
     <script src="app.js"></script>
