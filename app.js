@@ -100,3 +100,10 @@ ajouter.addEventListener("click", function () {
     showData();
     updateStatistics();
 });
+function clear() {
+    document.getElementById("task-title").value = "";
+    document.getElementById("task-description").value = "";
+    document.getElementById("task-status").value = "";
+    document.getElementById("task-deadline").value = "";
+    document.getElementById("task-priority").value = "";
+  }
