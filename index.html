@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Une application de gestion de tâches simple et efficace pour organiser vos tâches quotidiennes, suivre leur progression et fixer des priorités.">
+    <title>Gestionnaire de Tâches en Ligne - Organisez votre travail facilement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+
+<body>
+  
+     <body class="bg-gray-100">
+        <div class="todo-container max-w-4xl mx-auto p-5">
+            <form id="add-form" class="mb-4 flex space-x-2">
+                <input type="text" placeholder="Rechercher une tâche" id="search-input" onkeyup="searchTasks()" class="flex-grow p-2 border border-gray-300 rounded-md" />
+                <button type="button" id="todo-btn" class="bg-blue-500 text-white p-2 rounded-md" >Add Task</button>
+                <button type="button" class="bg-yellow-500 text-white p-2 rounded-md" ">ADD more task</button>
+            </form>
+    
+            <div class="boxes-container grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="box bg-white shadow-md p-4 rounded-md" id="to-do">
+                    <h3 class="heading text-lg font-bold" >TODO</h3>
+                 
+                </div>
+    
+                <div class="box bg-white shadow-md p-4 rounded-md" id="doing">
+                    <h3 class="heading text-lg font-bold" >DOING</h3>
+                  
+                </div>
+    
+                <div class="box bg-white shadow-md p-4 rounded-md" id="done">
+                    <h3 class="heading text-lg font-bold" >DONE</h3>
+                   
+                </div>
+            </div>
+        </div>
+
+
+    <!-- link JS -->
+    <script src="app.js"></script>
+</body>
+
+</html>
