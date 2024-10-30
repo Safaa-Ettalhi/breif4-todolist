@@ -10,45 +10,45 @@
     
 </head>
 
-<body>
-  
-     <body class="bg-gray-100">
+<body class="min-h-screen bg-center bg-[url('https://www.cflowapps.com/wp-content/uploads/2020/12/task-management-issues-800x450.png')] bg-no-repeat bg-cover ">
         <div class="todo-container max-w-4xl mx-auto p-5">
-            <form id="add-form" class="mb-4 flex space-x-2">
+            <form id="add-form" class="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                 <input type="text" placeholder="Rechercher une tâche" id="search-input" onkeyup="searchTasks()" class="flex-grow p-2 border border-gray-300 rounded-md" />
-                <button type="button" id="todo-btn" class="bg-blue-500 text-white p-2 rounded-md" >Add Task</button>
-                <button type="button" class="bg-yellow-500 text-white p-2 rounded-md" ">ADD more task</button>
+                <button type="button" id="todo-btn" class="bg-blue-500 text-white p-2 rounded-md w-full md:w-auto" >Add Task</button>
+                <button type="button" class="bg-yellow-500 text-white p-2 rounded-md w-full md:w-auto" >ADD more task</button>
             </form>
     
             <div class="boxes-container grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="box bg-white shadow-md p-4 rounded-md" id="to-do">
-                    <h3 class="heading text-lg font-bold" >TODO</h3>
+                    <h3 class="heading text-lg font-bold border-b-4 border-red-600 mb-4" >TODO</h3>
                  
                 </div>
     
                 <div class="box bg-white shadow-md p-4 rounded-md" id="doing">
-                    <h3 class="heading text-lg font-bold" >DOING</h3>
+                    <h3 class="heading text-lg font-bold border-b-4 border-yellow-300 mb-4" >DOING</h3>
                   
                 </div>
     
                 <div class="box bg-white shadow-md p-4 rounded-md" id="done">
-                    <h3 class="heading text-lg font-bold" >DONE</h3>
+                    <h3 class="heading text-lg font-bold border-b-4 border-lime-600 mb-4" >DONE</h3>
                    
                 </div>
             </div>
         </div>
   <!-- Card Add Modal -->
 <div id="task-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 hidden">
-    <div class="bg-slate-300 rounded-lg  p-6 w-96 max-w-full ">
+    <div class="bg-slate-300 rounded-lg  p-6 w-11/12 sm:w-96 max-w-full ">
       <h2 class="text-xl font-bold text-center text-red-600 ">" Ajouter une Tâche "</h2>
       <form id="modal-form" class="space-y-4">
         <div>
           <label for="task-title" class=" text-sm font-medium text-gray-700 px-2">Titre</label>
           <input type="text" id="task-title" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required>
+          <span id="error-title" class="text-red-500 text-sm"></span>
         </div>
         <div>
           <label for="task-description" class="block text-sm font-medium text-gray-700 px-2">Description</label>
           <textarea id="task-description" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required></textarea>
+          <span id="error-description" class="text-red-500 text-sm"></span>
         </div>
         <div>
           <label for="task-status" class="block text-sm font-medium text-gray-700 px-2">Statut</label>
@@ -57,10 +57,12 @@
             <option value="doing">Doing</option>
             <option value="done">Done</option>
           </select>
+          <span id="error-status" class="text-red-500 text-sm"></span>
         </div>
         <div>
           <label for="task-deadline" class="block text-sm font-medium text-gray-700 px-2">Date d'échéance</label>
           <input type="date" id="task-deadline" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 " required>
+          <span id="error-deadline" class="text-red-500 text-sm"></span>
         </div>
         <div>
           <label for="task-priority" class="block text-sm font-medium text-gray-700 px-2">Priorité</label>
@@ -69,6 +71,7 @@
             <option value="P2">P2</option>
             <option value="P3">P3</option>
           </select>
+          <span id="error-priority" class="text-red-500 text-sm"></span>
         </div>
         <div class="flex justify-end">
           <button type="button" class="bg-gray-400 text-gray-800 p-2 rounded-md hover:bg-gray-500 " id="close">Annuler</button>
