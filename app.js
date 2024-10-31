@@ -200,10 +200,7 @@ function showData() {
 
 // la modification
 function updateTask(index) {
-  // Ouvrir le modal et remplir les champs avec les données de la tâche existante
   const task = dataTasks[index]; // Obtenir la tâche à modifier
-
-  // Remplir le modal avec les données de la tâche
   document.getElementById("task-title").value = task.Titre;
   document.getElementById("task-description").value = task.Description;
   document.getElementById("task-status").value = task.Statut;
@@ -213,22 +210,23 @@ function updateTask(index) {
   // Afficher le modal
   document.getElementById("task-modal").classList.remove("hidden");
 
-  // Mettre à jour le bouton d'ajout pour modifier
   const addButton = document.getElementById("add");
   addButton.onclick = () => {
-    // Mettre à jour la tâche dans dataTasks
+    if (!validateForm()) {
+      return; 
+    }
     task.Titre = document.getElementById("task-title").value;
     task.Description = document.getElementById("task-description").value;
     task.Statut = document.getElementById("task-status").value;
     task.Date = document.getElementById("task-deadline").value;
     task.Priorite = document.getElementById("task-priority").value;
 
-    localStorage.setItem('task', JSON.stringify(dataTasks))
-    //fermer le modal
-    document.getElementById("task-modal").classList.add("hidden");
-    // Réafficher les données mises à jour
-    showData();
+    // Sauvegarder les modifications dans le localStorage
+    localStorage.setItem('task', JSON.stringify(dataTasks));
 
+    // Fermer le modal
+    document.getElementById("task-modal").classList.add("hidden");
+
+    showData();
   };
- 
 }
