@@ -97,6 +97,8 @@ ajouter.addEventListener("click", function () {
     dataTasks.push(newTasks);
     localStorage.setItem('task', JSON.stringify(dataTasks))
     clear();
+    //fermer le model
+    document.getElementById("task-modal").classList.add("hidden");
     showData();
     updateStatistics();
 });
@@ -125,11 +127,11 @@ function showData() {
 
       // Ajouter la classe de couleur de bordure en fonction de la priorité
       if (task.Priorite === "P1") {
-        taskCard.classList.add("border-red-500","border-l-5"); // Bordure rouge pour P1
+        taskCard.classList.add("border-red-500","border-l-5"); 
       } else if (task.Priorite === "P2") {
-        taskCard.classList.add("border-yellow-500"); // Bordure jaune pour P2
+        taskCard.classList.add("border-orange-400"); 
       } else if (task.Priorite === "P3") {
-        taskCard.classList.add("border-green-500"); // Bordure verte pour P3
+        taskCard.classList.add("border-green-500"); 
       }
   
       // Créer un élément de titre
@@ -137,17 +139,21 @@ function showData() {
       taskTitle.className = "font-bold text-lg mb-1";
       taskTitle.textContent = task.Titre;
   
-      // Créer un élément de description
+      // Créer d'élément description
       const taskDescription = document.createElement("h5");
       taskDescription.className = "text-sm mb-1";
       taskDescription.textContent = task.Description;
   
-      // Créer un élément de date d'échéance
+      // Créer d' élément  date d'échéance
       const taskDate = document.createElement("p");
       taskDate.className = "text-sm text-gray-500 mb-1";
       taskDate.textContent = `Échéance : ${task.Date}`;
+
+      //creation dune div parent des buttons
       const buttonContainer = document.createElement("div");
        buttonContainer.className = "flex space-x-2 mt-2";
+
+       // button update
        const updateButton = document.createElement("button");
         updateButton.className = "bg-yellow-500 text-white p-1 rounded-md";
         updateButton.textContent = "Modifier";
@@ -184,10 +190,45 @@ function showData() {
     updateStatistics();
     DragItem();
   }
+  //function qui supprime les taches
   function deleteTask(index) {
-    // Supprime l'élément de la liste des tâches (dataTasks) basé sur l'index
-    dataTasks.splice(index, 1); // Supprime la tâche de la liste
+    dataTasks.splice(index, 1); // splice Supprime la tâche de la liste
     localStorage.setItem('task', JSON.stringify(dataTasks))
-    showData(); // Réaffiche les tâches mises à jour
+    showData(); // Réaffiche les task apres les mj
     updateStatistics();
   }
+
+// la modification
+function updateTask(index) {
+  // Ouvrir le modal et remplir les champs avec les données de la tâche existante
+  const task = dataTasks[index]; // Obtenir la tâche à modifier
+
+  // Remplir le modal avec les données de la tâche
+  document.getElementById("task-title").value = task.Titre;
+  document.getElementById("task-description").value = task.Description;
+  document.getElementById("task-status").value = task.Statut;
+  document.getElementById("task-deadline").value = task.Date;
+  document.getElementById("task-priority").value = task.Priorite;
+
+  // Afficher le modal
+  document.getElementById("task-modal").classList.remove("hidden");
+
+  // Mettre à jour le bouton d'ajout pour modifier
+  const addButton = document.getElementById("add");
+  addButton.onclick = () => {
+    // Mettre à jour la tâche dans dataTasks
+    task.Titre = document.getElementById("task-title").value;
+    task.Description = document.getElementById("task-description").value;
+    task.Statut = document.getElementById("task-status").value;
+    task.Date = document.getElementById("task-deadline").value;
+    task.Priorite = document.getElementById("task-priority").value;
+
+    localStorage.setItem('task', JSON.stringify(dataTasks))
+    //fermer le modal
+    document.getElementById("task-modal").classList.add("hidden");
+    // Réafficher les données mises à jour
+    showData();
+
+  };
+ 
+}
