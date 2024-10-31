@@ -230,3 +230,15 @@ function updateTask(index) {
     showData();
   };
 }
+//statistique
+function updateStatistics() {
+  const todoCount = dataTasks.filter(task => task.Statut === 'to-do').length;
+  const doingCount = dataTasks.filter(task => task.Statut === 'doing').length;
+  const doneCount = dataTasks.filter(task => task.Statut === 'done').length;
+
+  document.getElementById('statistique_todo').innerText = todoCount;
+  document.getElementById('statistique_doing').innerText = doingCount;
+  document.getElementById('statistique_done').innerText = doneCount;
+}
+showData();
+updateStatistics();
