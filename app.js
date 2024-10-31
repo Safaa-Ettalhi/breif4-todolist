@@ -84,7 +84,7 @@ ajouter.addEventListener("click", function () {
   const deadline = document.getElementById("task-deadline").value;
   const priority = document.getElementById("task-priority").value;
 
-  // creation d-objet
+  // creation d-objet task
   let newTasks = {
     Titre: title,
     Description: description,
@@ -93,17 +93,101 @@ ajouter.addEventListener("click", function () {
     Priorite: priority,
   };
 
-  // ajouter tache a la liste
+  // ajouter la tache a la liste
     dataTasks.push(newTasks);
     localStorage.setItem('task', JSON.stringify(dataTasks))
     clear();
     showData();
     updateStatistics();
 });
+//function qui vide les values
 function clear() {
     document.getElementById("task-title").value = "";
     document.getElementById("task-description").value = "";
     document.getElementById("task-status").value = "";
     document.getElementById("task-deadline").value = "";
     document.getElementById("task-priority").value = "";
+  }
+
+//laffichage des element ajouter 
+function showData() {
+    // Réinitialiser le contenu des conteneurs pour éviter les doublons
+    document.getElementById("to-do").innerHTML = '<h3 class="heading text-lg font-bold border-b-4 border-red-600 mb-4">TODO | <span id="statistique_todo" class="text-red-600"> </span></h3>';
+    document.getElementById("doing").innerHTML = '<h3 class="heading text-lg font-bold border-b-4 border-yellow-300 mb-4">DOING | <span id="statistique_doing" class="text-yellow-300"> </span></h3>';
+    document.getElementById("done").innerHTML = '<h3 class="heading text-lg font-bold border-b-4 border-lime-600 mb-4">DONE | <span id="statistique_done" class="text-lime-600"> </span></h3>';
+  
+    // boucler sur la liste des tâches
+    dataTasks.forEach((task, index) => {
+      // Créer de card
+      const taskCard = document.createElement("div");
+      taskCard.className = "task-card bg-gray-200 p-3 rounded-md mb-3 shadow border-2"; // ajout de la classe border-2 pour des bordures
+      taskCard.setAttribute("draggable", "true");
+
+      // Ajouter la classe de couleur de bordure en fonction de la priorité
+      if (task.Priorite === "P1") {
+        taskCard.classList.add("border-red-500","border-l-5"); // Bordure rouge pour P1
+      } else if (task.Priorite === "P2") {
+        taskCard.classList.add("border-yellow-500"); // Bordure jaune pour P2
+      } else if (task.Priorite === "P3") {
+        taskCard.classList.add("border-green-500"); // Bordure verte pour P3
+      }
+  
+      // Créer un élément de titre
+      const taskTitle = document.createElement("h4");
+      taskTitle.className = "font-bold text-lg mb-1";
+      taskTitle.textContent = task.Titre;
+  
+      // Créer un élément de description
+      const taskDescription = document.createElement("h5");
+      taskDescription.className = "text-sm mb-1";
+      taskDescription.textContent = task.Description;
+  
+      // Créer un élément de date d'échéance
+      const taskDate = document.createElement("p");
+      taskDate.className = "text-sm text-gray-500 mb-1";
+      taskDate.textContent = `Échéance : ${task.Date}`;
+      const buttonContainer = document.createElement("div");
+       buttonContainer.className = "flex space-x-2 mt-2";
+       const updateButton = document.createElement("button");
+        updateButton.className = "bg-yellow-500 text-white p-1 rounded-md";
+        updateButton.textContent = "Modifier";
+        updateButton.addEventListener("click", () => updateTask(index)); // Fonction pour gérer la modification
+
+        // Créer le bouton "Supprimer"
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "bg-red-500 text-white p-1 rounded-md";
+        deleteButton.textContent = "Supprimer";
+        deleteButton.addEventListener("click", () => deleteTask(index)); 
+      
+        buttonContainer.appendChild(updateButton);
+        buttonContainer.appendChild(deleteButton);
+        // Ajouter les éléments à la carte
+      taskCard.appendChild(taskTitle);
+      taskCard.appendChild(taskDescription);
+      taskCard.appendChild(taskDate);
+      taskCard.appendChild(buttonContainer);
+  
+      // Ajouter un attribut de data-id pour pouvoir identifier les tâches
+      taskCard.setAttribute("data-id", index);
+  
+      // Ajouter l'élément de carte dans le conteneur correspondant au statut
+      if (task.Statut === "to-do") {
+        document.getElementById("to-do").appendChild(taskCard);
+      } else if (task.Statut === "doing") {
+        document.getElementById("doing").appendChild(taskCard);
+      } else if (task.Statut === "done") {
+        document.getElementById("done").appendChild(taskCard);
+      }
+
+      
+    });
+    updateStatistics();
+    DragItem();
+  }
+  function deleteTask(index) {
+    // Supprime l'élément de la liste des tâches (dataTasks) basé sur l'index
+    dataTasks.splice(index, 1); // Supprime la tâche de la liste
+    localStorage.setItem('task', JSON.stringify(dataTasks))
+    showData(); // Réaffiche les tâches mises à jour
+    updateStatistics();
   }
