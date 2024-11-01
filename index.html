@@ -7,6 +7,7 @@
     <meta name="description" content="Une application de gestion de tâches simple et efficace pour organiser vos tâches quotidiennes, suivre leur progression et fixer des priorités.">
     <title>Gestionnaire de Tâches en Ligne - Organisez votre travail facilement</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
     
 </head>
 
@@ -18,7 +19,7 @@
             <form id="add-form" class="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
                 <input type="text" placeholder="Rechercher une tâche" id="search-input" onkeyup="searchTasks()" class="flex-grow p-2 border border-gray-300 rounded-md" />
                 <button type="button" id="todo-btn" class="bg-blue-500 text-white p-2 rounded-md w-full md:w-auto" >Add Task</button>
-                <button type="button" class="bg-yellow-500 text-white p-2 rounded-md w-full md:w-auto" >ADD more task</button>
+                <button type="button" id="open-modal" class="bg-yellow-500 text-white p-2 rounded-md w-full md:w-auto" >ADD more task</button>
             </form>
     
             <div class="boxes-container grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -79,13 +80,14 @@
         <div class="flex justify-end">
           <button type="button" class="bg-gray-400 text-gray-800 p-2 rounded-md hover:bg-gray-500 " id="close">Annuler</button>
           <button type="button" class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600  ml-2" id="add">Ajouter</button>
-          <button id="save-btn" class="hidden">Sauvegarder</button>
+          <button id="save-btn" class="hidden bg-yellow-500 text-white p-2 rounded-md hover:bg-orange-500  ml-2">Sauvegarder</button>
         </div>
       </form>
     </div>
   </div>
   
-
+  
+  
     <!-- link JS -->
     <script src="app.js"></script>
 </body>
