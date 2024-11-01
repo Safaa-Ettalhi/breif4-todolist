@@ -124,7 +124,7 @@ function showData() {
       const taskCard = document.createElement("div");
       taskCard.className = "task-card bg-gray-200 p-3 rounded-md mb-3 shadow border-2"; // ajout de la classe border-2 pour des bordures
       taskCard.setAttribute("draggable", "true");
-
+      taskCard.classList.add("fade-in");
       // Ajouter la classe de couleur de bordure en fonction de la priorité
       if (task.Priorite === "P1") {
         taskCard.classList.add("border-red-500","border-l-5"); 
@@ -192,10 +192,16 @@ function showData() {
   }
   //function qui supprime les taches
   function deleteTask(index) {
-    dataTasks.splice(index, 1); // splice Supprime la tâche de la liste
-    localStorage.setItem('task', JSON.stringify(dataTasks))
-    showData(); // Réaffiche les task apres les mj
-    updateStatistics();
+    const taskCard = document.querySelector(`[data-id="${index}"]`);
+    taskCard.classList.add("fade-out");
+  
+    // Attendre la fin de l'animation avant de retirer la tâche de la liste
+    taskCard.addEventListener("animationend", () => {
+      dataTasks.splice(index, 1);
+      localStorage.setItem('task', JSON.stringify(dataTasks));
+      showData();
+      updateStatistics();
+    });
   }
 
 // la modification
@@ -236,11 +242,8 @@ document.getElementById("save-btn").onclick = () => {
   
   localStorage.setItem('task', JSON.stringify(dataTasks));
 
-  // Fermer le modal et réinitialiser le formulaire
   document.getElementById("task-modal").classList.add("hidden");
   clear();
-
-  // Rafraîchir l'affichage
   showData();
 };
 
@@ -262,7 +265,7 @@ document.getElementById("save-btn").onclick = () => {
   // Sauvegarder les modifications dans le localStorage
   localStorage.setItem('task', JSON.stringify(dataTasks));
 
-  // Réinitialiser le mode édition et masquer le bouton "Sauvegarder"
+  // Réinitialisation demode édition et masquer le button save et afficher add
   editingIndex = null;
   document.getElementById("save-btn").classList.add("hidden");
   document.getElementById("add").classList.remove("hidden");
@@ -270,8 +273,6 @@ document.getElementById("save-btn").onclick = () => {
   // Fermer le modal et réinitialiser le formulaire
   document.getElementById("task-modal").classList.add("hidden");
   clear();
-
-  // Rafraîchir l'affichage
   showData();
 };
 
@@ -287,3 +288,17 @@ function updateStatistics() {
 }
 showData();
 updateStatistics();
+
+//la recherche 
+function searchTasks() {
+  const searchInput = document.getElementById('search-input').value.toLowerCase();
+  const tasks = document.querySelectorAll('.task-card');
+
+  tasks.forEach(task => {
+      if (task.textContent.toLowerCase().includes(searchInput)) {
+          task.style.display = 'block';
+      } else {
+          task.style.display = 'none';
+      }
+  });
+}
