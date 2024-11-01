@@ -199,37 +199,82 @@ function showData() {
   }
 
 // la modification
+let editingIndex = null; 
+
 function updateTask(index) {
-  const task = dataTasks[index]; // Obtenir la tâche à modifier
+  const task = dataTasks[index]; 
   document.getElementById("task-title").value = task.Titre;
   document.getElementById("task-description").value = task.Description;
   document.getElementById("task-status").value = task.Statut;
   document.getElementById("task-deadline").value = task.Date;
   document.getElementById("task-priority").value = task.Priorite;
 
+  // Activation dedition
+  editingIndex = index;
+  //masquer le button add et afficher le save
+  document.getElementById("add").classList.add("hidden");
+  document.getElementById("save-btn").classList.remove("hidden");
+
   // Afficher le modal
   document.getElementById("task-modal").classList.remove("hidden");
-
-  const addButton = document.getElementById("add");
-  addButton.onclick = () => {
-    if (!validateForm()) {
-      return; 
-    }
-    task.Titre = document.getElementById("task-title").value;
-    task.Description = document.getElementById("task-description").value;
-    task.Statut = document.getElementById("task-status").value;
-    task.Date = document.getElementById("task-deadline").value;
-    task.Priorite = document.getElementById("task-priority").value;
-
-    // Sauvegarder les modifications dans le localStorage
-    localStorage.setItem('task', JSON.stringify(dataTasks));
-
-    // Fermer le modal
-    document.getElementById("task-modal").classList.add("hidden");
-
-    showData();
-  };
 }
+
+document.getElementById("save-btn").onclick = () => {
+  if (!validateForm()) {
+    return;
+  }
+  //jappel les element avec leur valeurs
+  const newTask = {
+    Titre: document.getElementById("task-title").value,
+    Description: document.getElementById("task-description").value,
+    Statut: document.getElementById("task-status").value,
+    Date: document.getElementById("task-deadline").value,
+    Priorite: document.getElementById("task-priority").value,
+  };
+  //jajout lelement modifier dans dataTasks
+  dataTasks.push(newTask); 
+  
+  localStorage.setItem('task', JSON.stringify(dataTasks));
+
+  // Fermer le modal et réinitialiser le formulaire
+  document.getElementById("task-modal").classList.add("hidden");
+  clear();
+
+  // Rafraîchir l'affichage
+  showData();
+};
+
+// Gestion du bouton "Sauvegarder" pour mettre à jour la tâche existante
+document.getElementById("save-btn").onclick = () => {
+  if (!validateForm()) {
+    return;
+  }
+
+  // Mettre à jour les données de la tâche
+  dataTasks[editingIndex] = {
+    Titre: document.getElementById("task-title").value,
+    Description: document.getElementById("task-description").value,
+    Statut: document.getElementById("task-status").value,
+    Date: document.getElementById("task-deadline").value,
+    Priorite: document.getElementById("task-priority").value,
+  };
+
+  // Sauvegarder les modifications dans le localStorage
+  localStorage.setItem('task', JSON.stringify(dataTasks));
+
+  // Réinitialiser le mode édition et masquer le bouton "Sauvegarder"
+  editingIndex = null;
+  document.getElementById("save-btn").classList.add("hidden");
+  document.getElementById("add").classList.remove("hidden");
+
+  // Fermer le modal et réinitialiser le formulaire
+  document.getElementById("task-modal").classList.add("hidden");
+  clear();
+
+  // Rafraîchir l'affichage
+  showData();
+};
+
 //statistique
 function updateStatistics() {
   const todoCount = dataTasks.filter(task => task.Statut === 'to-do').length;
