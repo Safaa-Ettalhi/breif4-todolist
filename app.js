@@ -124,7 +124,7 @@ function showData() {
     dataTasks.forEach((task, index) => {
       // Créer de card
       const taskCard = document.createElement("div");
-      taskCard.className = "task-card bg-gray-200 p-3 rounded-md mb-3 shadow border-2"; // ajout de la classe border-2 pour des bordures
+      taskCard.className = "task-card bg-gray-200 bg-opacity-80 p-3 rounded-md mb-3  border border-4 border-l-8"; 
       taskCard.setAttribute("draggable", "true");
       taskCard.classList.add("fade-in");
       // Ajouter la classe de couleur de bordure en fonction de la priorité
