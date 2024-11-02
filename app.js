@@ -10,6 +10,7 @@ todoBtn.addEventListener("click",function(){
 const close=document.getElementById("close");
 close.addEventListener("click",function(){
     document.getElementById("task-modal").classList.add("hidden");
+    clear();
 })
 
 
@@ -113,10 +114,11 @@ function clear() {
 
 //laffichage des element ajouter 
 function showData() {
+    sortTasksByPriority();
     // Réinitialiser le contenu des conteneurs pour éviter les doublons
-    document.getElementById("to-do").innerHTML = '<h3 class="heading text-lg font-bold border-b-4 border-red-600 mb-4">TODO | <span id="statistique_todo" class="text-red-600"> </span></h3>';
-    document.getElementById("doing").innerHTML = '<h3 class="heading text-lg font-bold border-b-4 border-yellow-300 mb-4">DOING | <span id="statistique_doing" class="text-yellow-300"> </span></h3>';
-    document.getElementById("done").innerHTML = '<h3 class="heading text-lg font-bold border-b-4 border-lime-600 mb-4">DONE | <span id="statistique_done" class="text-lime-600"> </span></h3>';
+    document.getElementById("to-do").innerHTML = '<h3 class="heading text-2xl font-bold border-b-4 border-red-600 mb-4">TODO | <span id="statistique_todo" class="text-red-600 "> </span></h3>';
+    document.getElementById("doing").innerHTML = '<h3 class="heading text-2xl font-bold border-b-4 border-yellow-300 mb-4">DOING | <span id="statistique_doing" class="text-yellow-300"> </span></h3>';
+    document.getElementById("done").innerHTML = '<h3 class="heading text-2xl font-bold border-b-4 border-lime-600 mb-4">DONE | <span id="statistique_done" class="text-lime-600"> </span></h3>';
   
     // boucler sur la liste des tâches
     dataTasks.forEach((task, index) => {
@@ -136,17 +138,17 @@ function showData() {
   
       // Créer un élément de titre
       const taskTitle = document.createElement("h4");
-      taskTitle.className = "font-bold text-lg mb-1";
+      taskTitle.className = "font-bold text-xl mb-1";
       taskTitle.textContent = task.Titre;
   
       // Créer d'élément description
       const taskDescription = document.createElement("h5");
-      taskDescription.className = "text-sm mb-1";
+      taskDescription.className = "text-lg mx-2 mb-1";
       taskDescription.textContent = task.Description;
   
       // Créer d' élément  date d'échéance
       const taskDate = document.createElement("p");
-      taskDate.className = "text-sm text-gray-500 mb-1";
+      taskDate.className = "text-m mx-2 text-gray-500 mb-1";
       taskDate.textContent = `Échéance : ${task.Date}`;
 
       //creation dune div parent des buttons
@@ -155,13 +157,13 @@ function showData() {
 
        // button update
        const updateButton = document.createElement("button");
-        updateButton.className = "bg-yellow-500 text-white p-1 rounded-md";
+        updateButton.className = "bg-yellow-500 mx-2 text-white text-lg p-1 rounded-md";
         updateButton.textContent = "Modifier";
         updateButton.addEventListener("click", () => updateTask(index)); // Fonction pour gérer la modification
 
         // Créer le bouton "Supprimer"
         const deleteButton = document.createElement("button");
-        deleteButton.className = "bg-red-500 text-white p-1 rounded-md";
+        deleteButton.className = "bg-red-500 mx-2 text-white text-lg p-1 rounded-md";
         deleteButton.textContent = "Supprimer";
         deleteButton.addEventListener("click", () => deleteTask(index)); 
       
@@ -241,9 +243,9 @@ document.getElementById("save-btn").onclick = () => {
   dataTasks.push(newTask); 
   
   localStorage.setItem('task', JSON.stringify(dataTasks));
-
-  document.getElementById("task-modal").classList.add("hidden");
   clear();
+  document.getElementById("task-modal").classList.add("hidden");
+ 
   showData();
 };
 
@@ -301,4 +303,41 @@ function searchTasks() {
           task.style.display = 'none';
       }
   });
+}
+function sortTasksByPriority() {
+  dataTasks.sort((a, b) => {
+    const priorities = { P1: 1, P2: 2, P3: 3 };
+    return priorities[a.Priorite] - priorities[b.Priorite];
+  });
+}
+//Drad AND DROP;
+function DragItem(){
+  let taches=document.querySelectorAll('.task-card');
+  taches.forEach(task=>{
+    task.addEventListener('dragstart',function(){
+      
+      task.style.opacity= '0.5';
+      task.classList.add('is-dragging')
+    })
+    task.addEventListener('dragend',function(){
+    
+      task.style.opacity= '1';
+      task.classList.remove('is-dragging')
+
+      const newStatus = task.parentNode.id; 
+      const taskId = task.getAttribute('data-id');
+      dataTasks[taskId].Statut = newStatus; 
+      
+      localStorage.setItem('task', JSON.stringify(dataTasks)); 
+      sortTasksByPriority();
+      updateStatistics(); 
+    })
+    todoBoxes.forEach(box=>{
+      box.addEventListener('dragover',function(e){
+        e.preventDefault();
+        const curTask = document.querySelector('.is-dragging')
+        box.appendChild(curTask)
+      })
+    })
+  })
 }
