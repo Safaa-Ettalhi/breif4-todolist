@@ -206,68 +206,49 @@ function showData() {
     });
   }
 
-// la modification
-let editingIndex = null; 
+//la modification 
+let editingIndex = null; // Indice de la tâche en cours d'édition
 
 function updateTask(index) {
-  const task = dataTasks[index]; 
+  const task = dataTasks[index];
+  
+  // Remplir le formulaire avec les valeurs de la tâche
   document.getElementById("task-title").value = task.Titre;
   document.getElementById("task-description").value = task.Description;
   document.getElementById("task-status").value = task.Statut;
   document.getElementById("task-deadline").value = task.Date;
   document.getElementById("task-priority").value = task.Priorite;
 
-  // Activation dedition
-  editingIndex = index;
-  //masquer le button add et afficher le save
-  document.getElementById("add").classList.add("hidden");
-  document.getElementById("save-btn").classList.remove("hidden");
-
-  // Afficher le modal
-  document.getElementById("task-modal").classList.remove("hidden");
+  editingIndex = index; // Activer le mode édition
+  document.getElementById("add").classList.add("hidden"); // Masquer "Ajouter"
+  document.getElementById("save-btn").classList.remove("hidden"); // Afficher "Sauvegarder"
+  
+  document.getElementById("task-modal").classList.remove("hidden"); // Afficher le modal
 }
 
 document.getElementById("save-btn").onclick = () => {
-  if (!validateForm()) {
-    return;
-  }
-  //jappel les element avec leur valeurs
-  const newTask = {
-    Titre: document.getElementById("task-title").value,
-    Description: document.getElementById("task-description").value,
-    Statut: document.getElementById("task-status").value,
-    Date: document.getElementById("task-deadline").value,
-    Priorite: document.getElementById("task-priority").value,
-  };
-  //jajout lelement modifier dans dataTasks
-  dataTasks.push(newTask); 
+  if (!validateForm()) return; // Valider le formulaire
   
-  localStorage.setItem('task', JSON.stringify(dataTasks));
-  clear();
-  document.getElementById("task-modal").classList.add("hidden");
- 
-  showData();
-};
-
-// Gestion du bouton "Sauvegarder" pour mettre à jour la tâche existante
-document.getElementById("save-btn").onclick = () => {
-  if (!validateForm()) {
-    return;
-  }
-
-  // Mettre à jour les données de la tâche
-  dataTasks[editingIndex] = {
+  // Créer un objet tâche avec les valeurs du formulaire
+  const updatedTask = {
     Titre: document.getElementById("task-title").value,
     Description: document.getElementById("task-description").value,
     Statut: document.getElementById("task-status").value,
     Date: document.getElementById("task-deadline").value,
     Priorite: document.getElementById("task-priority").value,
   };
+
+  // Mettre à jour ou ajouter la tâche
+  if (editingIndex !== null) {
+    dataTasks[editingIndex] = updatedTask; // Mettre à jour la tâche existante
+  } else {
+    dataTasks.push(updatedTask); // Ajouter une nouvelle tâche
+  }
 
   // Sauvegarder les modifications dans le localStorage
   localStorage.setItem('task', JSON.stringify(dataTasks));
 
-  // Réinitialisation demode édition et masquer le button save et afficher add
+  // Réinitialiser le mode édition, masquer "Sauvegarder", afficher "Ajouter"
   editingIndex = null;
   document.getElementById("save-btn").classList.add("hidden");
   document.getElementById("add").classList.remove("hidden");
@@ -275,8 +256,9 @@ document.getElementById("save-btn").onclick = () => {
   // Fermer le modal et réinitialiser le formulaire
   document.getElementById("task-modal").classList.add("hidden");
   clear();
-  showData();
+  showData(); // Actualiser l'affichage des tâches
 };
+
 
 //statistique
 function updateStatistics() {
